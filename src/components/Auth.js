@@ -1,8 +1,23 @@
 import classes from './Auth.module.css';
+import { authActions } from '../store/auth_slice';
+import { useSelector, useDispatch } from "react-redux";
+import UserProfile from './UserProfile';
+import { Fragment } from 'react';
 
 const Auth = () => {
+
+  const authenticated = useSelector(state => state.auth.authenticated);
+
+  const dispatch = useDispatch()
+
+  const loginHandler = (event) => {
+    event.preventDefault()
+    dispatch(authActions.login())
+  };
+
   return (
-    <main className={classes.auth}>
+    <Fragment>
+    {authenticated ? <UserProfile /> : <main className={classes.auth}>
       <section>
         <form>
           <div className={classes.control}>
@@ -13,10 +28,11 @@ const Auth = () => {
             <label htmlFor='password'>Password</label>
             <input type='password' id='password' />
           </div>
-          <button>Login</button>
+          <button onClick={loginHandler}>Login</button>
         </form>
       </section>
-    </main>
+    </main>}
+    </Fragment>
   );
 };
 
